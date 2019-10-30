@@ -1,5 +1,5 @@
-﻿/* 
- * Copyright (c) 2014 Mark Salsbery
+﻿/*
+ * Copyright (c) 2019 Mark Salsbery
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,6 +20,8 @@
  */
 
 
+/* global OpenSeadragon */
+
 /**
  * @file
  * @version  <%= pkg.name %> <%= pkg.version %>
@@ -34,11 +36,32 @@
  */
 
 
-(function(OSD, $, undefined) {
+(function (OSD, $, undefined) {
 
-    //if (!OSD.version || OSD.version.major < 1) {
-    //    throw new Error('OpenSeadragonConsoleHook requires OpenSeadragon version 1.0.0+');
-    //}
+	// if (!OSD.version || OSD.version.major < 1) {
+	// 	throw new Error(
+	// 		'OpenSeadragonConsoleHook requires OpenSeadragon version 1.0.0+'
+	// 	);
+	// }
+
+	/**
+	 * Creates a new ConsoleHook.
+	 *
+	 * @method addConsoleHook
+	 * @memberof external:"OpenSeadragon.Viewer"#
+	 * @param {Object} options
+     * @param {Function} [options.log] - console.log function. Function can return true to prevent original function call.
+     * @param {Function} [options.debug] - console.debug function. Function can return true to prevent original function call.
+     * @param {Function} [options.info] - console.info function. Function can return true to prevent original function call.
+     * @param {Function} [options.warn] - console.warn function. Function can return true to prevent original function call.
+     * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
+	 * @returns {OpenSeadragonImaging.ConsoleHook}
+	 *
+	 **/
+	OSD.Viewer.prototype.addConsoleHook = function (options) {
+		options = options || {};
+		return new $.ConsoleHook(options);
+	};
 
     /**
      * Creates a new OpenSeadragonImaging.ConsoleHook.
@@ -54,17 +77,18 @@
      * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
      *
      **/
-    $.ConsoleHook = function(options) {
+    $.ConsoleHook = function (options) {
         options = options || {};
 
         for (var key in options) {
             if (options.hasOwnProperty(key)) {
-                /*jshint loopfunc:true*/
-                (function (handler)  {
+				/*jshint loopfunc:true*/
+				// eslint-disable-next-line no-loop-func
+                (function (handler) {
                     var origHandler = OSD.console[key];
                     OSD.console[key] = function () {
                         if (!handler.apply(this, arguments) && origHandler) {
-                            return origHandler.apply(this, arguments);
+                            origHandler.apply(this, arguments);
                         }
                     };
                 }(options[key]));
@@ -73,22 +97,21 @@
         }
     };
 
+	/**
+	 * ConsoleHook version.
+	 * @member {Object} OpenSeadragonImaging.ConsoleHook.version
+	 * @property {String} versionStr - The version number as a string ('major.minor.revision').
+	 * @property {Number} major - The major version number.
+	 * @property {Number} minor - The minor version number.
+	 * @property {Number} revision - The revision number.
+	 */
+	$.ConsoleHook.version = {
+		versionStr: '<%= consolehookVersion.versionStr %>'
+	};
+	var versionSplits = $.ConsoleHook.version.versionStr.split('.');
+	$.ConsoleHook.version.major = parseInt(versionSplits[0], 10);
+	$.ConsoleHook.version.minor = parseInt(versionSplits[1], 10);
+	$.ConsoleHook.version.revision = parseInt(versionSplits[2], 10);
 
-    /**
-     * ConsoleHook version.
-     * @member {Object} OpenSeadragonImaging.ConsoleHook.version
-     * @property {String} versionStr - The version number as a string ('major.minor.revision').
-     * @property {Number} major - The major version number.
-     * @property {Number} minor - The minor version number.
-     * @property {Number} revision - The revision number.
-     */
-    /* jshint ignore:start */
-    $.ConsoleHook.version = {
-        versionStr: '<%= consolehookVersion.versionStr %>',
-        major: <%= consolehookVersion.major %>,
-        minor: <%= consolehookVersion.minor %>,
-        revision: <%= consolehookVersion.revision %>
-    };
-    /* jshint ignore:end */
 
 }(OpenSeadragon, window.OpenSeadragonImaging = window.OpenSeadragonImaging || {}));
