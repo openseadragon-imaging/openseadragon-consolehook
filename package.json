@@ -53,10 +53,13 @@
     "webpack-cli": "^3.3.9",
     "webpack-merge": "^4.2.2"
   },
+  "peerDependencies": {
+    "openseadragon": "2.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --config webpack.dev.js",
-	"build": "webpack --config webpack.prod.js",
-	"doc": ".\\node_modules\\.bin\\jsdoc -c doc-conf.json"
+    "build": "webpack --config webpack.prod.js",
+    "doc": ".\\node_modules\\.bin\\jsdoc -c doc-conf.json"
   }
 }
