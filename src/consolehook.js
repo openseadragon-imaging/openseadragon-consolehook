@@ -19,8 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-/* global OpenSeadragon */
+import OpenSeadragon from 'openseadragon';
 
 /**
  * @file
@@ -36,7 +35,7 @@
  */
 
 
-(function (OSD, $, undefined) {
+export default (function (OSD, $) {
 
 	// if (!OSD.version || OSD.version.major < 1) {
 	// 	throw new Error(
@@ -80,8 +79,8 @@
     $.ConsoleHook = function (options) {
         options = options || {};
 
-        for (var key in options) {
-            if (options.hasOwnProperty(key)) {
+        for (let key in options) {
+            if (Object.prototype.hasOwnProperty.call(options, key)) {
 				/*jshint loopfunc:true*/
 				// eslint-disable-next-line no-loop-func
                 (function (handler) {
@@ -106,12 +105,12 @@
 	 * @property {Number} revision - The revision number.
 	 */
 	$.ConsoleHook.version = {
-		versionStr: '<%= consolehookVersion.versionStr %>'
+		versionStr: '<%= pkg.version %>'
 	};
 	var versionSplits = $.ConsoleHook.version.versionStr.split('.');
 	$.ConsoleHook.version.major = parseInt(versionSplits[0], 10);
 	$.ConsoleHook.version.minor = parseInt(versionSplits[1], 10);
 	$.ConsoleHook.version.revision = parseInt(versionSplits[2], 10);
 
-
-}(OpenSeadragon, window.OpenSeadragonImaging = window.OpenSeadragonImaging || {}));
+	return $.ConsoleHook;
+}(OpenSeadragon || window.OpenSeadragon, window.OpenSeadragonImaging = window.OpenSeadragonImaging || {}));
