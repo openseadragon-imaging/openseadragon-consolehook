@@ -34,9 +34,7 @@ import OpenSeadragon from 'openseadragon';
  *
  */
 
-
 export default (function (OSD, $) {
-
 	// if (!OSD.version || OSD.version.major < 1) {
 	// 	throw new Error(
 	// 		'OpenSeadragonConsoleHook requires OpenSeadragon version 1.0.0+'
@@ -49,11 +47,11 @@ export default (function (OSD, $) {
 	 * @method addConsoleHook
 	 * @memberof external:"OpenSeadragon.Viewer"#
 	 * @param {Object} options
-     * @param {Function} [options.log] - console.log function. Function can return true to prevent original function call.
-     * @param {Function} [options.debug] - console.debug function. Function can return true to prevent original function call.
-     * @param {Function} [options.info] - console.info function. Function can return true to prevent original function call.
-     * @param {Function} [options.warn] - console.warn function. Function can return true to prevent original function call.
-     * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
+	 * @param {Function} [options.log] - console.log function. Function can return true to prevent original function call.
+	 * @param {Function} [options.debug] - console.debug function. Function can return true to prevent original function call.
+	 * @param {Function} [options.info] - console.info function. Function can return true to prevent original function call.
+	 * @param {Function} [options.warn] - console.warn function. Function can return true to prevent original function call.
+	 * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
 	 * @returns {OpenSeadragonImaging.ConsoleHook}
 	 *
 	 **/
@@ -62,39 +60,39 @@ export default (function (OSD, $) {
 		return new $.ConsoleHook(options);
 	};
 
-    /**
-     * Creates a new OpenSeadragonImaging.ConsoleHook.
-     *
-     * @class ConsoleHook
-     * @classdesc Provides hooks into the OpenSeadragon console pipeline.
-     * @memberof OpenSeadragonImaging
-     * @param {Object} options
-     * @param {Function} [options.log] - console.log function. Function can return true to prevent original function call.
-     * @param {Function} [options.debug] - console.debug function. Function can return true to prevent original function call.
-     * @param {Function} [options.info] - console.info function. Function can return true to prevent original function call.
-     * @param {Function} [options.warn] - console.warn function. Function can return true to prevent original function call.
-     * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
-     *
-     **/
-    $.ConsoleHook = function (options) {
-        options = options || {};
+	/**
+	 * Creates a new OpenSeadragonImaging.ConsoleHook.
+	 *
+	 * @class ConsoleHook
+	 * @classdesc Provides hooks into the OpenSeadragon console pipeline.
+	 * @memberof OpenSeadragonImaging
+	 * @param {Object} options
+	 * @param {Function} [options.log] - console.log function. Function can return true to prevent original function call.
+	 * @param {Function} [options.debug] - console.debug function. Function can return true to prevent original function call.
+	 * @param {Function} [options.info] - console.info function. Function can return true to prevent original function call.
+	 * @param {Function} [options.warn] - console.warn function. Function can return true to prevent original function call.
+	 * @param {Function} [options.error] - console.error function. Function can return true to prevent original function call.
+	 *
+	 **/
+	$.ConsoleHook = function (options) {
+		options = options || {};
 
-        for (let key in options) {
-            if (Object.prototype.hasOwnProperty.call(options, key)) {
+		for (let key in options) {
+			if (Object.prototype.hasOwnProperty.call(options, key)) {
 				/*jshint loopfunc:true*/
 				// eslint-disable-next-line no-loop-func
-                (function (handler) {
-                    var origHandler = OSD.console[key];
-                    OSD.console[key] = function () {
-                        if (!handler.apply(this, arguments) && origHandler) {
-                            origHandler.apply(this, arguments);
-                        }
-                    };
-                }(options[key]));
-                /*jshint loopfunc:false*/
-            }
-        }
-    };
+				(function (handler) {
+					var origHandler = OSD.console[key];
+					OSD.console[key] = function () {
+						if (!handler.apply(this, arguments) && origHandler) {
+							origHandler.apply(this, arguments);
+						}
+					};
+				})(options[key]);
+				/*jshint loopfunc:false*/
+			}
+		}
+	};
 
 	/**
 	 * ConsoleHook version.
@@ -113,4 +111,7 @@ export default (function (OSD, $) {
 	$.ConsoleHook.version.revision = parseInt(versionSplits[2], 10);
 
 	return $.ConsoleHook;
-}(OpenSeadragon || window.OpenSeadragon, window.OpenSeadragonImaging = window.OpenSeadragonImaging || {}));
+})(
+	OpenSeadragon || window.OpenSeadragon,
+	(window.OpenSeadragonImaging = window.OpenSeadragonImaging || {})
+);
