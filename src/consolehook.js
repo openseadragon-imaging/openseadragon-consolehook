@@ -22,15 +22,15 @@
 import OpenSeadragon from 'openseadragon';
 
 /**
- * @file
- * @version  <%= pkg.name %> <%= pkg.version %>
+ * @file openseadragon-consolehook.js
+ * @version <%= pkg.version %>
  * @author Mark Salsbery <msalsbery@hotmail.com>
  *
  */
 
 /**
  * @module openseadragon-consolehook
- * @version  <%= pkg.name %> <%= pkg.version %>
+ * @version <%= pkg.version %>
  *
  */
 
@@ -102,13 +102,7 @@ export default (function (OSD, $) {
 	 * @property {Number} minor - The minor version number.
 	 * @property {Number} revision - The revision number.
 	 */
-	$.ConsoleHook.version = {
-		versionStr: '<%= pkg.version %>'
-	};
-	var versionSplits = $.ConsoleHook.version.versionStr.split('.');
-	$.ConsoleHook.version.major = parseInt(versionSplits[0], 10);
-	$.ConsoleHook.version.minor = parseInt(versionSplits[1], 10);
-	$.ConsoleHook.version.revision = parseInt(versionSplits[2], 10);
+	$.ConsoleHook.version = '<%= pkg.version.obj %>';
 
 	return $.ConsoleHook;
 })(

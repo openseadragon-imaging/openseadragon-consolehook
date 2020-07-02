@@ -9,11 +9,12 @@
   "private": false,
   "author": {
     "name": "Mark Salsbery",
-    "email": "msalsbery@hotmail.com"
+    "email": "msalsbery@hotmail.com",
+    "url": "https://github.com/msalsbery"
   },
   "contributors": [],
   "main": "dist/openseadragon-consolehook.js",
-  "homepage": "https://github.com/openseadragon-imaging/openseadragon-consolehook",
+  "homepage": "https://github.com/openseadragon-imaging/openseadragon-consolehook#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/openseadragon-imaging/openseadragon-consolehook.git"
@@ -22,7 +23,10 @@
   "keywords": [
     "openseadragon",
     "openseadragonimaging",
-    "openseadragon plugin"
+    "deep",
+    "zoom",
+    "dzi",
+    "plugin"
   ],
   "engines": {
     "node": ">= 10.0.0",
