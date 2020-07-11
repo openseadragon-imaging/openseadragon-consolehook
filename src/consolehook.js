@@ -1,25 +1,4 @@
-﻿/*
- * Copyright (c) 2019 Mark Salsbery
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-import OpenSeadragon from 'openseadragon';
+﻿import OpenSeadragon from 'openseadragon';
 
 /**
  * @file openseadragon-consolehook.js
@@ -31,6 +10,7 @@ import OpenSeadragon from 'openseadragon';
 /**
  * @module openseadragon-consolehook
  * @version <%= pkg.version %>
+ * @requires module:openseadragon
  *
  */
 
@@ -77,12 +57,15 @@ export default (function (OSD, $) {
 	$.ConsoleHook = function (options) {
 		options = options || {};
 
+		this.origHandlers = {};
+
 		for (let key in options) {
 			if (Object.prototype.hasOwnProperty.call(options, key)) {
+				this.origHandlers[key] = OSD.console[key] || null;
 				/*jshint loopfunc:true*/
 				// eslint-disable-next-line no-loop-func
 				(function (handler) {
-					var origHandler = OSD.console[key];
+					let origHandler = OSD.console[key];
 					OSD.console[key] = function () {
 						if (!handler.apply(this, arguments) && origHandler) {
 							origHandler.apply(this, arguments);
@@ -97,12 +80,26 @@ export default (function (OSD, $) {
 	/**
 	 * ConsoleHook version.
 	 * @member {Object} OpenSeadragonImaging.ConsoleHook.version
+	 * @static
 	 * @property {String} versionStr - The version number as a string ('major.minor.revision').
 	 * @property {Number} major - The major version number.
 	 * @property {Number} minor - The minor version number.
 	 * @property {Number} revision - The revision number.
 	 */
 	$.ConsoleHook.version = '<%= pkg.version.obj %>';
+
+	/**
+	 * Remove hooks and OpenSeadragon.console references. Call before
+	 * OpenSeadragon.Viewer.destroy().
+	 * @function OpenSeadragonImaging.ConsoleHook.prototype#destroy
+	 * @since 2.2.0
+	 */
+	$.ConsoleHook.prototype.destroy = function () {
+		for (let key in this.origHandlers) {
+			OSD.console[key] = this.origHandlers[key];
+		}
+		this.origHandlers = {};
+	};
 
 	return $.ConsoleHook;
 })(
