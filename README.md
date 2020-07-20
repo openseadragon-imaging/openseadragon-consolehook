@@ -1,4 +1,4 @@
-## OpenSeadragonConsoleHook
+# OpenSeadragonConsoleHook
 
 [![Gitter](https://badges.gitter.im/openseadragon-imaging/community.svg)](https://gitter.im/openseadragon-imaging/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
